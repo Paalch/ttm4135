@@ -1,20 +1,17 @@
 {% extends 'base.twig' %}
 
-
-
 {% block content %}
+    <h2>Login</h2>
 
-<h2>Login</h2>
+    {{ flash.error|raw }} <br/>
 
-{{ flash.error|raw }} <br />
+    <form action="" method="POST">
 
-<form action="" method="POST">
-
-<label>Username: </label>
-<input type="text" name="username"> <br />
-<label>Password: </label>
-<input type="text" name="password"> <br />
-<input type="submit" name="submit" value="Log in">
-</form>
+        <label>Username: </label>
+        <input type="text" name="username"> <br/>
+        <label>Password: </label>
+        <input type="password" name="password"> <br/>
+        <input type="submit" name="submit" value="Log in">
+    </form>
 {% endblock %}
 
