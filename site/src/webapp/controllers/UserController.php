@@ -23,6 +23,19 @@ class UserController extends Controller
         }
     }
 
+    // Does string contain letters?
+    function hasCapLetters( $string ) {
+        return (!ctype_upper($string) && !ctype_lower($string));
+    }
+    // Does string contain numbers?
+    function hasNumbers( $string ) {
+        return preg_match( '/\d/', $string );
+    }
+    // Does string contain special characters?
+    function hasSpecialChars( $string ) {
+        return preg_match('/[^a-zA-Z\d]/', $string);
+    }
+
     function create()		  
     {
         $request = $this->app->request;
@@ -32,13 +45,9 @@ class UserController extends Controller
         $passwordConf = $request->post('passwordConf');
 
         if($passwordConf == $password){
-            if (strlen($password)>=8){
-                if (!ctype_upper($password) && !ctype_lower($password)){
-                     return True;
-                }else {
-                    return False;
-                }
-            }
+            if (hasCapLetters($password) && hasNumbers($password) && hasSpecialChars($password)){
+                return true;
+            }else { return false;}
         }
 
 
