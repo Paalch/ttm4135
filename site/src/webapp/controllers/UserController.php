@@ -27,7 +27,10 @@ class UserController extends Controller
     {
         $request = $this->app->request;
         $username = $request->post('username');
-        $password = $request->post('password');
+
+        if(preg_match('/[A-Z]/', $password)){
+            $password = $request->post('password');
+        }
 
 
         $user = User::makeEmpty();
