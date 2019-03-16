@@ -45,7 +45,7 @@ class UserController extends Controller
         $passwordConf = $request->post('passwordConf');
 
         if($passwordConf == $password){
-            if (hasCapLetters($password) && hasNumbers($password) && hasSpecialChars($password)){
+            if($this->hasCapLetters($password) && $this->hasNumbers($password) && $this->hasSpecialChars($password)){
                 return true;
             }else { return false;}
         }
