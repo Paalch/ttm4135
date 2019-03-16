@@ -104,7 +104,7 @@ class User
 
     function setPassword($password)
     {
-        $this->password = $password;
+        $this->password = password_hash($password, PASSWORD_DEFAULT);
     }
 
     function setEmail($email)
