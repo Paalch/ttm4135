@@ -2,3 +2,6 @@ site/vendor
 public/
 
 \.idea/
+
+site/app.db
+app.db
