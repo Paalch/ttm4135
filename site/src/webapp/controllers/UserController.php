@@ -39,11 +39,6 @@ class UserController extends Controller
           $email = $request->post('email');
           $user->setEmail($email);
         }
-        if($request->post('bio'))
-        {
-          $bio = $request->post('bio');
-          $user->setBio($bio);
-        }
 
         
         $user->save();
@@ -123,14 +118,12 @@ class UserController extends Controller
             $username = $request->post('username');
             $password = $request->post('password');
             $email = $request->post('email');
-            $bio = $request->post('bio');
 
             $isAdmin = ($request->post('isAdmin') != null);
             
 
             $user->setUsername($username);
             $user->setPassword($password);
-            $user->setBio($bio);
             $user->setEmail($email);
             $user->setIsAdmin($isAdmin);
 
@@ -162,14 +155,12 @@ class UserController extends Controller
             $username = $request->post('username');
             $password = $request->post('password');
             $email = $request->post('email');
-            $bio = $request->post('bio');
 
             $isAdmin = ($request->post('isAdmin') != null);
             
 
             $user->setUsername($username);
             $user->setPassword($password);
-            $user->setBio($bio);
             $user->setEmail($email);
             $user->setIsAdmin($isAdmin);
 

@@ -13,20 +13,18 @@ class User
     protected $username;
     protected $password;
     protected $email;
-    protected $bio = 'Bio is empty.';
     protected $isAdmin = 0;
 
     static $app;
 
 
-    static function make($id, $username, $password, $email, $bio, $isAdmin )
+    static function make($id, $username, $password, $email, $isAdmin )
     {
         $user = new User();
         $user->id = $id;
         $user->username = $username;
         $user->password = $password;
         $user->email = $email;
-        $user->bio = $bio;
         $user->isAdmin = $isAdmin;
 
         return $user;
@@ -47,14 +45,12 @@ class User
                 $this->username,
                 $this->password,
                 $this->email,
-                $this->bio,
                 $this->isAdmin            );
         } else {
           $query = sprintf(self::UPDATE_QUERY,
                 $this->username,
                 $this->password,
                 $this->email,
-                $this->bio,
                 $this->isAdmin,
                 $this->id
             );
@@ -91,11 +87,6 @@ class User
         return $this->email;
     }
 
-    function getBio()
-    {
-        return $this->bio;
-    }
-
     function isAdmin()
     {
         return $this->isAdmin === "1";
@@ -121,10 +112,6 @@ class User
         $this->email = $email;
     }
 
-    function setBio($bio)
-    {
-        $this->bio = $bio;
-    }
     function setIsAdmin($isAdmin)
     {
         $this->isAdmin = $isAdmin;
@@ -192,7 +179,6 @@ class User
             $row['username'],
             $row['password'],
             $row['email'],
-            $row['bio'],
             $row['isadmin']
         );
     }

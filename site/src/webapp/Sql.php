@@ -14,7 +14,7 @@ class Sql
      * Create tables.
      */
     static function up() {
-        $q1 = "CREATE TABLE users (id INTEGER PRIMARY KEY, username VARCHAR(50), password VARCHAR(50), email varchar(50),  bio varhar(50), isadmin INTEGER);";
+        $q1 = "CREATE TABLE users (id INTEGER PRIMARY KEY, username VARCHAR(50), password VARCHAR(50), email varchar(50), isadmin INTEGER);";
 
         self::$pdo->exec($q1);
 
