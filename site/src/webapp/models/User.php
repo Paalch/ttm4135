@@ -4,8 +4,8 @@ namespace ttm4135\webapp\models;
 
 class User
 {
-    const INSERT_QUERY = "INSERT INTO users(username, password, email, bio, isadmin) VALUES('%s', '%s', '%s' , '%s' , '%s')";
-    const UPDATE_QUERY = "UPDATE users SET username='%s', password='%s', email='%s', bio='%s', isadmin='%s' WHERE id='%s'";
+    const INSERT_QUERY = "INSERT INTO users(username, password, email, isadmin) VALUES('%s', '%s', '%s' , '%s')";
+    const UPDATE_QUERY = "UPDATE users SET username='%s', password='%s', email='%s', isadmin='%s' WHERE id='%s'";
     const DELETE_QUERY = "DELETE FROM users WHERE id='%s'";
     const FIND_BY_NAME_QUERY = "SELECT * FROM users WHERE username='%s'";
     const FIND_BY_ID_QUERY = "SELECT * FROM users WHERE id='%s'";

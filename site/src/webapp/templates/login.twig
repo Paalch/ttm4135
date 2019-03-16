@@ -2,13 +2,11 @@
 
 {% block content %}
     {{ flash.error|raw }} <br/>
-    <h2>Welcome, please sign to your account</h2>
+    <h2>Welcome, please sign in to your account:</h2>
     <form class="form-container" action="" method="POST">
         <label>Username: </label>
         <input type="text" name="username" required>
         <label>Password: </label>
-        <input type="password" name="password" required>
-        <label>Repeat password: </label>
         <input type="password" name="password" required>
         <input type="submit" value="Log in">
     </form>
