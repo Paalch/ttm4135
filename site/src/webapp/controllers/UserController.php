@@ -29,17 +29,17 @@ class UserController extends Controller
         $username = $request->post('username');
         $password = $request->post('password');
 
-        #$passwordConf = $request->post('passwordConf');
+        $passwordConf = $request->post('passwordConf');
 
-        #if($passwordConf == $password){
-        if (strlen($password)>=8){
-            if (!ctype_upper($password) && !ctype_lower($password)){
-                 echo 'hei';
-            }else {
-                return False;
+        if($passwordConf == $password){
+            if (strlen($password)>=8){
+                if (!ctype_upper($password) && !ctype_lower($password)){
+                     return True;
+                }else {
+                    return False;
+                }
             }
         }
-        #}
 
 
 
