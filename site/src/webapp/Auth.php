@@ -13,14 +13,8 @@ class Auth
     static function checkCredentials($username, $password)
     {
         $user = User::findByUser($username);
-
-        if ($user === null) {
-            return false;
-        }
-
-        if( $user->getPassword() == $password)
-        {
-          return true;
+        if ($user) {
+            return password_verify($password, $user->getPassword());
         }
         return false;
     }
@@ -47,7 +41,7 @@ class Auth
     static function user()
     {
         if (self::check()) {
-            return User::findById($_SESSION['userid']);         
+            return User::findById($_SESSION['userid']);
         }
     }
 
@@ -57,32 +51,32 @@ class Auth
     static function isAdmin()
     {
         if (self::check()) {
-          return self::user()->isAdmin();	// uses this classes user() method to retrieve the user from sql, then call isadmin on that object.
+            return self::user()->isAdmin();    // uses this classes user() method to retrieve the user from sql, then call isadmin on that object.
         }
 
     }
 
-    /** 
+    /**
      * Does the logged in user have r/w access to user details identified by $tuserid
      */
-    static function userAccess($tuserid) 
+    static function userAccess($tuserid)
     {
-        if(self::user()->getId() == $tuserid)   //a user can change their account
+        if (self::user()->getId() == $tuserid)   //a user can change their account
         {
-          return true;
+            return true;
         }
-        if (self::isAdmin() )           //admins can change any account
+        if (self::isAdmin())           //admins can change any account
         {
-          return true;
+            return true;
         }
         return false;
 
     }
-    
+
     static function logout()
     {
         session_unset();
-        session_destroy();	
+        session_destroy();
         session_regenerate_id();
     }
 }
