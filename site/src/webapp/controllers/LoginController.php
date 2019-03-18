@@ -15,7 +15,7 @@ class LoginController extends Controller
     {
         if (Auth::check()) {
             $username = Auth::user()->getUserName();
-            $this->app->flash('info', 'You are already logged in as ' . $username);
+            $this->app->flash('info', 'You are already logged in!');
             $this->app->redirect('/');
         } else {
             $this->render('login.twig', ['title'=>"Login"]);
@@ -31,7 +31,7 @@ class LoginController extends Controller
         if ( Auth::checkCredentials($username, $password) ) {
             $user = User::findByUser($username);
             $_SESSION['userid'] = $user->getId();
-            $this->app->flash('info', "You are now successfully logged in as " . $user->getUsername() . ".");
+            $this->app->flash('info', "You are now successfully logged in!");
             $this->app->redirect('/');
         } else {
             $this->app->flashNow('error', 'Incorrect username/password combination.');
