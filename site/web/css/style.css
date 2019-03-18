@@ -31,7 +31,7 @@ body {
     box-shadow: 1px 0px 2px 0px rgba(0, 0, 0, 0.53);
 }
 
-#navbar a {
+#navbar a, #navbar p {
     width: calc(100% - 2rem);
     display: block;
     background-color: #FEFEFE;
@@ -41,7 +41,7 @@ body {
     color: black;
 }
 
-#navbar a:hover {
+#navbar a:hover{
     background-color: #EDEDED;
 }
 

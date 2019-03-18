@@ -1,50 +1,50 @@
 <!DOCTYPE html>
 <html>
-    <head>
-        <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-        <link rel="stylesheet" href="/css/style.css"/>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+    <link rel="stylesheet" href="/css/style.css"/>
 
-        {% set titleVar = 'Group Website' %}
+    {% set titleVar = 'Group Website' %}
 
-        <title>{{ title|default(titleVar) }}</title>
-        <script>
-        </script>
-    </head>
-    <body>
-        <div id="container">
-            <div id="navbar">
-                <a href="/"> <b>Home</b></a>
+    <title>{{ title|default(titleVar) }}</title>
+    <script>
+    </script>
+</head>
+<body>
+<div id="container">
+    <div id="navbar">
+        <a href="/"> <b>Home</b></a>
+        {% if isLoggedIn %}
+            <p>{{ loggedInUsername }} </p>
+            {% if isAdmin %}
+                <a href="/admin">Admin section</a>
+            {% endif %}
+            <a href="/logout">Log out</a>
+        {% else %}
+            <a href="/register">Create user</a>
+            <a href="/login">Login</a>
+        {% endif %}
+
+
+    </div>
+    <div id="content">
+        <div id="flashinfo">{{ flash.info|raw }}</div>
+
+
+        {% block content %}
+        <h1>Main page!
+            <h2>
                 {% if isLoggedIn %}
-                    Logged in as {{ loggedInUsername }}.
-                    {% if isAdmin %}
-                        <a href="/admin">Admin section</a>
-                    {% endif %}
-                    <a href="/logout">Log out</a>
+                    <h2> Hello, friend! </h2>
                 {% else %}
-                    <a href="/register">Create user</a>
-                    <a href="/login">Login</a>
-                {% endif %}
-
-
-
-            </div>
-            <div id="content">
-                <div id="flashinfo">{{ flash.info|raw }}</div>
-
-
-                {% block content %}
-                <h1>Main page!<h2>
-                {% if isLoggedIn %}
-                <h2> Hello, friend! </h2>
-                {% else %}
-                <img src="images/Gandalf.jpg" alt="YouShallNotPass!" style="width: 500px; height: 500px;">
+                    <img src="images/Gandalf.jpg" alt="YouShallNotPass!" style="width: 500px; height: 500px;">
                 {% endif %}
 
 
                 {% endblock %}
 
 
-            </div>
-        </div>
-    </body>
+    </div>
+</div>
+</body>
 </html>
