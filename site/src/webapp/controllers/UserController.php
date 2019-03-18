@@ -52,7 +52,7 @@ class UserController extends Controller
             }else
                 {$this->render('newUserForm.twig', [$username = $request->post('username'),
                     $password = $request->post('password')]);
-                    $this->app->flash('error', 'The password does not contain the requirements.');
+                    #$this->app->flash('error', 'The password does not contain the requirements.');
                 }
         }
 
