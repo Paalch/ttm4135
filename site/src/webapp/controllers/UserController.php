@@ -61,8 +61,8 @@ class UserController extends Controller
 
 
             }else {
+                $this->app->flash('error', 'THE PASSWORD DOES NOT CONTAIN ALL THE REQUIREMENTS ');
                 $this->render('newUserForm.twig', []);
-                $this->app->flash('info', 'Thanks for creating a user. You may now log in.');
             }
         }
 
