@@ -15,7 +15,7 @@
             <div id="navbar">
                 <a href="/"> <b>Home</b></a>
                 {% if isLoggedIn %}
-                    Logged in as {{ loggedInUsername|raw }}.
+                    Logged in as {{ loggedInUsername }}.
                     {% if isAdmin %}
                         <a href="/admin">Admin section</a>
                     {% endif %}
