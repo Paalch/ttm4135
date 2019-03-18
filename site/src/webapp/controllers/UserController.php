@@ -46,15 +46,14 @@ class UserController extends Controller
 
         if($passwordConf == $password){
             if($this->hasCapLetters($password) && $this->hasNumbers($password) && $this->hasSpecialChars($password)){
-                return true;
-            }else { return false;}
+                $user = User::makeEmpty();
+                $user->setUsername($username);
+                $user->setPassword($password);
+            }else
+                {return false;}
         }
 
 
-
-        $user = User::makeEmpty();
-        $user->setUsername($username);
-        $user->setPassword($password);
 
         if($request->post('email'))
         {
