@@ -62,7 +62,7 @@ class UserController extends Controller
 
             }else {
                 $this->render('newUserForm.twig', []);
-                $this->app->flash('info', 'Thanks for creating a user. You may now log in.');
+                $this->app->sticky('error', 'Error');
             }
         }
 
