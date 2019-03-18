@@ -49,10 +49,9 @@ class UserController extends Controller
                 $user = User::makeEmpty();
                 $user->setUsername($username);
                 $user->setPassword($password);
-            }else
-                {$this->render('newUserForm.twig', []);
-                    $this->app->flash('error', 'The password does not contain the requirements.');
-                }
+            }else {
+                $this->render('newUserForm.twig', []);
+            }
         }
 
 
