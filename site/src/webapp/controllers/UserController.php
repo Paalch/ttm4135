@@ -46,14 +46,17 @@ class UserController extends Controller
 
         if($passwordConf == $password){
             if($this->hasCapLetters($password) && $this->hasNumbers($password) && $this->hasSpecialChars($password)){
-                $user = User::makeEmpty();
-                $user->setUsername($username);
-                $user->setPassword($password);
+                #$user = User::makeEmpty();
+                #$user->setUsername($username);
+                #$user->setPassword($password);
             }else {
                 $this->render('newUserForm.twig', []);
+                $this->app->flash('info', 'Thanks for creating a user. You may now log in.');
             }
         }
-
+        $user = User::makeEmpty();
+        $user->setUsername($username);
+        $user->setPassword($password);
 
 
         if($request->post('email'))
