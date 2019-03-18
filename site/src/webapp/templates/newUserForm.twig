@@ -6,7 +6,12 @@
 {% block content %}
 
 <h2>Register new user</h2>
-
+<h4>Passwords has to contain</h4>
+    <li><ul>At least on capital letter</ul></li>
+    <li><ul>At least on small letter</ul></li>
+    <li><ul>At least on number</ul></li>
+    <li><ul>At least on special character</ul></li>
+    <li><ul>At least on 8 characters long</ul></li>
 {{ flash.error|raw }} <br />
 
 <form action="" method="POST">
