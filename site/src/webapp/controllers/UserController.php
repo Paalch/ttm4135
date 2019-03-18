@@ -50,8 +50,7 @@ class UserController extends Controller
                 $user->setUsername($username);
                 $user->setPassword($password);
             }else
-                {$this->render('newUserForm.twig', [$username = $request->post('username'),
-                    #$password = $request->post('password')]);
+                {$this->render('newUserForm.twig', []);
                     $this->app->flash('error', 'The password does not contain the requirements.');
                 }
         }
