@@ -10,7 +10,6 @@ body {
     height: 100vh;
 }
 
-
 #logo {
     background-color: #EDEDED;
     text-align: center;
@@ -29,7 +28,7 @@ body {
 
 #navbar {
     width: 10rem;
-    box-shadow: 1px 0px 2px 0px rgba(0,0,0,0.53);
+    box-shadow: 1px 0px 2px 0px rgba(0, 0, 0, 0.53);
 }
 
 #navbar a {
@@ -45,7 +44,6 @@ body {
 #navbar a:hover {
     background-color: #EDEDED;
 }
-
 
 #content {
     min-height: 200px;
@@ -109,4 +107,11 @@ input {
 
 .error {
     text-color: red;
+}
+
+.center-content {
+    display: flex;
+    width: 100%;
+    align-content: center;
+    justify-content: center;
 }

@@ -1,25 +1,26 @@
-
 {% extends 'base.twig' %}
 
 
 
 {% block content %}
 
-<h2>Register new user</h2>
-{{ flash.error|raw }} <br />
+    <h2>Register new user</h2>
+    {{ flash.error }} <br/>
 
-<form action="" method="POST">
+    <form action="" method="POST">
 
-<label>Username: </label>
-<input type="text" name="username"> <br />
-<label>Password: </label>
-<input type="password" name="password"> <br />
-<label>Repeat password: </label>
-<input type="password" name="passwordConf"> <br />
-<label>Email: </label>
-<input type="text" name="email"> <br />
-<input type="submit" name="submit" value="Submit">
-</form>
+        <label>Username: </label>
+        <input type="text" name="username"> <br/>
+        <label>Password: </label>
+        <input type="password" name="password"> <br/>
+        <label>Repeat password: </label>
+        <input type="password" name="passwordConf"> <br/>
+        <label>Email: </label>
+        <input type="email" name="email"> <br/>
+        <div class="center-content">
+            <input type="submit" name="submit" value="Submit">
+        </div>
+    </form>
 
     <h5>Passwords has to contain:</h5>
     <ul>
