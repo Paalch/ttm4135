@@ -106,3 +106,7 @@ input {
     box-sizing: border-box;
     width: 20rem;
 }
+
+.error {
+    text-color: red;
+}
