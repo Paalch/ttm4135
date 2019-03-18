@@ -50,7 +50,7 @@ class UserController extends Controller
                 $user->setUsername($username);
                 $user->setPassword($password);
             }else
-                {return false;}
+                {$this->render('newUserForm.twig', []);}
         }
 
 
