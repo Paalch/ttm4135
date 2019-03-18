@@ -23,29 +23,37 @@ class UserController extends Controller
         }
     }
 
+    // Does string contain letters?
+    function hasCapLetters( $string ) {
+        return (!ctype_upper($string) && !ctype_lower($string));
+    }
+    // Does string contain numbers?
+    function hasNumbers( $string ) {
+        return preg_match( '/\d/', $string );
+    }
+    // Does string contain special characters?
+    function hasSpecialChars( $string ) {
+        return preg_match('/[^a-zA-Z\d]/', $string);
+    }
+
     function create()		  
     {
         $request = $this->app->request;
         $username = $request->post('username');
         $password = $request->post('password');
 
-        #$passwordConf = $request->post('passwordConf');
+        $passwordConf = $request->post('passwordConf');
 
-        #if($passwordConf == $password){
-        if (strlen($password)>=8){
-            if (!ctype_upper($password) && !ctype_lower($password)){
-                 echo 'hei';
-            }else {
-                return False;
-            }
+        if($passwordConf == $password){
+            if($this->hasCapLetters($password) && $this->hasNumbers($password) && $this->hasSpecialChars($password)){
+                $user = User::makeEmpty();
+                $user->setUsername($username);
+                $user->setPassword($password);
+            }else
+                {return false;}
         }
-        #}
 
 
-
-        $user = User::makeEmpty();
-        $user->setUsername($username);
-        $user->setPassword($password);
 
         if($request->post('email'))
         {
