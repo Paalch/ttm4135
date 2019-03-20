@@ -53,7 +53,14 @@ class UserController extends Controller
                 } else {
 
                     $user = User::makeEmpty();
+
                     $user->setUsername($username);
+                    //check if the username already exist
+                    $user = User::findByUser($username);
+                    if ($user !== 0) {
+                        $this->app->flash('error', 'THE USERNAME IS ALREADY TAKEN');
+                    }
+
                     $user->setPassword($password);
 
                     if ($request->post('email')) {
@@ -65,10 +72,12 @@ class UserController extends Controller
                     $this->app->redirect('/login');
                 }
 
+
             } else {
-                $this->app->flash('error', 'THE PASSWORD DOES NOT CONTAIN ALL THE REQUIREMENTS ');
+                $this->app->flash('error', 'THE PASSWORD DOES NOT MEET ALL THE REQUIREMENTS ');
                 $this->render('newUserForm.twig', []);
             }
+
         }
 
     }
