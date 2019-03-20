@@ -2,13 +2,15 @@
 
 namespace ttm4135\webapp\models;
 
+use PDO;
+
 class User
 {
-    const INSERT_QUERY = "INSERT INTO users(username, password, email, isadmin) VALUES('%s', '%s', '%s' , '%s')";
-    const UPDATE_QUERY = "UPDATE users SET username='%s', password='%s', email='%s', isadmin='%s' WHERE id='%s'";
+    const INSERT_QUERY = "INSERT INTO users(username, password, email, isadmin) VALUES(? , ? , ? , ?)";
+    const UPDATE_QUERY = "UPDATE users SET username=?, password=?, email=?, isadmin='? WHERE id='%s'";
     const DELETE_QUERY = "DELETE FROM users WHERE id='%s'";
-    const FIND_BY_NAME_QUERY = "SELECT * FROM users WHERE username='%s'";
-    const FIND_BY_ID_QUERY = "SELECT * FROM users WHERE id='%s'";
+    const FIND_BY_NAME_QUERY = "SELECT * FROM users WHERE username=:username";
+    const FIND_BY_ID_QUERY = "SELECT * FROM users WHERE id=:id";
     protected $id = null;
     protected $username;
     protected $password;
@@ -18,7 +20,7 @@ class User
     static $app;
 
 
-    static function make($id, $username, $password, $email, $isAdmin )
+    static function make($id, $username, $password, $email, $isAdmin)
     {
         $user = new User();
         $user->id = $id;
@@ -40,23 +42,22 @@ class User
      */
     function save()
     {
+        // Data to be used
+        $data = [
+            $this->username,
+            $this->password,
+            $this->email,
+            $this->isAdmin
+        ];
         if ($this->id === null) {
-            $query = sprintf(self::INSERT_QUERY,
-                $this->username,
-                $this->password,
-                $this->email,
-                $this->isAdmin            );
-        } else {
-          $query = sprintf(self::UPDATE_QUERY,
-                $this->username,
-                $this->password,
-                $this->email,
-                $this->isAdmin,
-                $this->id
-            );
-        }
+            $query = self::$app->db->prepare(self::INSERT_QUERY);
+            return $query->execute($data);
 
-        return self::$app->db->exec($query);
+        } else {
+            $query = self::$app->db->prepare(self::UPDATE_QUERY);
+            array_push($data, $this->id);
+            return $query->execute($data);
+        }
     }
 
     function delete()
@@ -126,15 +127,14 @@ class User
      */
     static function findById($userid)
     {
-        $query = sprintf(self::FIND_BY_ID_QUERY, $userid);
-        $result = self::$app->db->query($query, \PDO::FETCH_ASSOC);
-        $row = $result->fetch();
-
-        if($row == false) {
-            return null;
+        $query = self::$app->db->prepare(self::FIND_BY_ID_QUERY);
+        if ($query->execute([':id' => $userid])) {
+            $row = $query->fetch();
+            if ($row) {
+                return User::makeFromSql($row);
+            }
         }
-
-        return User::makeFromSql($row);
+        return null;
     }
 
     /**
@@ -145,18 +145,17 @@ class User
      */
     static function findByUser($username)
     {
-        $query = sprintf(self::FIND_BY_NAME_QUERY, $username);
-        $result = self::$app->db->query($query, \PDO::FETCH_ASSOC);
-        $row = $result->fetch();
-
-        if($row == false) {
-            return null;
+        $query = self::$app->db->prepare(self::FIND_BY_NAME_QUERY);
+        if ($query->execute([':username' => $username])) {
+            $row = $query->fetch();
+            if ($row) {
+                return User::makeFromSql($row);
+            }
         }
-
-        return User::makeFromSql($row);
+        return null;
     }
 
-    
+
     static function all()
     {
         $query = "SELECT * FROM users";
@@ -183,8 +182,19 @@ class User
         );
     }
 
+    public function __toString()
+    {
+        return implode(" ", [
+            "id" => $this->id,
+            "username" => $this->id,
+            "password" => $this->password,
+            "email" => $this->email,
+            "isAdmin" => $this->isAdmin
+        ]);
+    }
+
 }
 
 
-  User::$app = \Slim\Slim::getInstance();
+User::$app = \Slim\Slim::getInstance();
 
