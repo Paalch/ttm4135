@@ -3,26 +3,8 @@
 
 
 {% block content %}
-
-<<<<<<< HEAD
-<h2>Register new user</h2>
-{{ flash.error}} <br />
-
-<form action="" method="POST">
-
-<label>Username: </label>
-<input type="text" name="username"> <br />
-<label>Password: </label>
-<input type="password" name="password"> <br />
-<label>Repeat password: </label>
-<input type="password" name="passwordConf"> <br />
-<label>Email: </label>
-<input type="text" name="email"> <br />
-<input type="submit" name="submit" value="Submit">
-</form>
-=======
     <h2>Register new user</h2>
-   <p class="error"> {{ flash.error }} <br/> </p>
+    <p class="error"> {{ flash.error }} <br/></p>
 
     <form action="" method="POST">
 
@@ -38,7 +20,6 @@
             <input type="submit" name="submit" value="Submit">
         </div>
     </form>
->>>>>>> ce7847382f21f1ed46e132c83f8a9400508c5b53
 
     <h5>Passwords has to contain:</h5>
     <ul>
