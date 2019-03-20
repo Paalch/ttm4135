@@ -49,7 +49,8 @@ class UserController extends Controller
 
                 if (strpos($username,'<' ) !== false){
                     $this->app->flash('error', 'USERNAME CANNOT CONTAIN <');
-                    $this->render('newUserForm.twig', []);
+                    $this->app->redirect('/newUserForm');
+                    #$this->render('newUserForm.twig', []);
                 }else {
 
                     $user = User::makeEmpty();
@@ -66,9 +67,8 @@ class UserController extends Controller
                 }
 
             }else {
-                $this->render('newUserForm.twig', []);
                 $this->app->flash('error', 'THE PASSWORD DOES NOT CONTAIN ALL THE REQUIREMENTS ');
-                #$this->render('newUserForm.twig', []);
+                $this->render('newUserForm.twig', []);
             }
         }
 
