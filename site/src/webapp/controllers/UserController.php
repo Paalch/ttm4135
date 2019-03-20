@@ -47,7 +47,7 @@ class UserController extends Controller
         if($passwordConf == $password){
             if($this->hasCapLetters($password) && $this->hasNumbers($password) && $this->hasSpecialChars($password)){
 
-                if (strpos($username, '<' )){
+                if (strpos($username,'<' ) !== false){
                     $this->app->flash('error', 'USERNAME CANNOT CONTAIN <');
                     $this->render('newUserForm.twig', []);
                 }else {
