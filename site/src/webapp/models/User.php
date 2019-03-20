@@ -7,8 +7,8 @@ use PDO;
 class User
 {
     const INSERT_QUERY = "INSERT INTO users(username, password, email, isadmin) VALUES(? , ? , ? , ?)";
-    const UPDATE_QUERY = "UPDATE users SET username=?, password=?, email=?, isadmin='? WHERE id='%s'";
-    const DELETE_QUERY = "DELETE FROM users WHERE id='%s'";
+    const UPDATE_QUERY = "UPDATE users SET username=?, password=?, email=?, isadmin=? WHERE id=?";
+    const DELETE_QUERY = "DELETE FROM users WHERE id=?";
     const FIND_BY_NAME_QUERY = "SELECT * FROM users WHERE username=:username";
     const FIND_BY_ID_QUERY = "SELECT * FROM users WHERE id=:id";
     protected $id = null;
@@ -62,10 +62,8 @@ class User
 
     function delete()
     {
-        $query = sprintf(self::DELETE_QUERY,
-            $this->id
-        );
-        return self::$app->db->exec($query);
+        $query = self::$app->db->prepare(self::DELETE_QUERY);
+        return $query->execute([$this->id]);
     }
 
     function getId()
