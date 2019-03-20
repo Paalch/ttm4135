@@ -18,8 +18,13 @@ $view->parserOptions = array(
 
 
 try {
+    $options = [
+        PDO::ATTR_EMULATE_PREPARES => false, // turn off emulation mode for "real" prepared statements
+        PDO::ATTR_DEFAULT_FETCH_MODE => PDO::FETCH_ASSOC, //make the default fetch be an associative array
+    ];
+
     // Create (connect to) SQLite database in file
-    $app->db = new PDO('sqlite:../app.db');
+    $app->db = new PDO('sqlite:../app.db', '', '', $options);
     // Set errormode to exceptions
     $app->db->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 } catch (PDOException $e) {

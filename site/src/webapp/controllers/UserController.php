@@ -40,32 +40,36 @@ class UserController extends Controller
     {
         $request = $this->app->request;
         $username = $request->post('username');
+
         $password = $request->post('password');
 
         $passwordConf = $request->post('passwordConf');
 
-        if($passwordConf == $password){
-            if($this->hasCapLetters($password) && $this->hasNumbers($password) && $this->hasSpecialChars($password)){
-                $user = User::makeEmpty();
-                $user->setUsername($username);
-                $user->setPassword($password);
+        if($passwordConf == $password) {
+            if ($this->hasCapLetters($password) && $this->hasNumbers($password) && $this->hasSpecialChars($password)) {
+                if (strpos($username, '<') !== false) {
+                    $this->app->flash('error', 'USERNAME CANNOT CONTAIN <');
+                    $this->render('newUserForm.twig', []);
+                } else {
 
-                if($request->post('email'))
-                {
-                    $email = $request->post('email');
-                    $user->setEmail($email);
+                    $user = User::makeEmpty();
+                    $user->setUsername($username);
+                    $user->setPassword($password);
+
+                    if ($request->post('email')) {
+                        $email = $request->post('email');
+                        $user->setEmail($email);
+                    }
+                    $user->save();
+                    $this->app->flash('info', 'Thanks for creating a user. You may now log in.');
+                    $this->app->redirect('/login');
                 }
-                $user->save();
-                $this->app->flash('info', 'Thanks for creating a user. You may now log in.');
-                $this->app->redirect('/login');
 
-
-            }else {
+            } else {
                 $this->app->flash('error', 'THE PASSWORD DOES NOT CONTAIN ALL THE REQUIREMENTS ');
                 $this->render('newUserForm.twig', []);
             }
         }
-
 
     }
 
