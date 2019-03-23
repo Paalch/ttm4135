@@ -7,15 +7,14 @@
     <p class="error"> {{ flash.error }} <br/></p>
 
     <form action="" method="POST">
-
         <label>Username: </label>
-        <input type="text" name="username"> <br/>
+        <input type="text" name="username" required> <br/>
         <label>Password: </label>
-        <input type="password" name="password"> <br/>
+        <input type="password" name="password" required> <br/>
         <label>Repeat password: </label>
-        <input type="password" name="passwordConf"> <br/>
+        <input type="password" name="passwordConf" required> <br/>
         <label>Email: </label>
-        <input type="email" name="email"> <br/>
+        <input type="email" name="email" required> <br/>
         <div class="center-content">
             <input type="submit" name="submit" value="Submit">
         </div>
