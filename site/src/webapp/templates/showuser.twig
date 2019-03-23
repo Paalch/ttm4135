@@ -6,13 +6,13 @@
 
     <h2>Edit User {{ user.id }}</h2>
 
-    {{ flash.error }} <br/>
+    <p class="error"> {{ flash.error }} <br/></p>
 
     <form action="" method="POST">
         <label>Username: </label>
-        <input type="text" name="username" value="{{ user.username }}"> <br/>
+        <input type="text" name="username" value="{{ user.username }}" required> <br/>
         <label>Email: </label>
-        <input type="email" name="email" value="{{ user.email }}"> <br/>
+        <input type="email" name="email" value="{{ user.email }}" required> <br/>
         <label>New password: </label>
         <input type="password" name="password" value=""> <br/>
         <label>Confirm New password: </label>

@@ -142,8 +142,6 @@ class UserController extends Controller
         $user = User::makeEmpty();
 
         if (Auth::isAdmin()) {
-
-
             $request = $this->app->request;
 
             $username = $request->post('username');
@@ -173,36 +171,40 @@ class UserController extends Controller
 
     function edit($tuserid)
     {
-
         $user = User::findById($tuserid);
-
         if (!$user) {
             throw new \Exception("Unable to fetch logged in user's object from db.");
         } elseif (Auth::userAccess($tuserid)) {
-
-
             $request = $this->app->request;
 
             $username = $request->post('username');
-            $password = $request->post('password');
+            $password = $request->post('password', false);
+            $passwordConf = $request->post('passwordConf');
             $email = $request->post('email');
-
             $isAdmin = ($request->post('isAdmin') != null);
 
-
-            $user->setUsername($username);
-            $user->setPassword($password);
-            $user->setEmail($email);
-            $user->setIsAdmin($isAdmin);
-
-            $user->save();
-            $this->app->flashNow('info', 'Your profile was successfully saved.');
-
-            $user = User::findById($tuserid);
-
-            $this->render('showuser.twig', ['user' => $user]);
-
-
+            if (!$passwordConf === $password && $password) {
+                $this->app->flashNow('error', 'The password does not meet all the requirements');
+                $this->render('showuser.twig', ['user' => $user]);
+            } else if ($password && (!$this->hasCapLetters($password) || !$this->hasNumbers($password) || !$this->hasSpecialChars($password))) {
+                $this->app->flashNow('error', 'The password does not meet all the requirements');
+                $this->render('showuser.twig', ['user' => $user]);
+            } else if (preg_match('/[^a-z0-9 _]+$/i', $username)) {
+                $this->app->flashNow('error', 'Username may only contain ASCII letters and digits, 
+            with hyphens, underscores and spaces as internal separators');
+                $this->render('showuser.twig', ['user' => $user]);
+            } else {
+                $user->setUsername($username);
+                if ($password) {
+                    $user->setPassword($password);
+                }
+                $user->setEmail($email);
+                $user->setIsAdmin($isAdmin);
+                $user->save();
+                $this->app->flashNow('info', 'Your profile was successfully saved.');
+                $user = User::findById($tuserid);
+                $this->render('showuser.twig', ['user' => $user]);
+            }
         } else {
             $username = $user->getUserName();
             $this->app->flash('info', 'You do not have access this resource. You are logged in as ' . $username);
