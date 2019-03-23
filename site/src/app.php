@@ -1,4 +1,7 @@
 <?php
+
+use ttm4135\webapp\Auth;
+
 require_once __DIR__ . '/../vendor/autoload.php';
 
 $templatedir = __DIR__ . '/webapp/templates/';
@@ -35,6 +38,15 @@ try {
 
 $ns = 'ttm4135\\webapp\\controllers\\';
 
+$isAdmin = function () {
+    if (!Auth::isAdmin()) {
+        $app = \Slim\Slim::getInstance();
+        $username = Auth::user()->getUserName();
+        $app->flash('info', 'You do not have access this resource. You are logged in as ' . $username);
+        $app->redirect('/');
+    }
+};
+
 
 /// app->(GET/POST) (URL, $ns . CONTROLLER);    // description..   <who has access>
 
@@ -48,16 +60,17 @@ $app->post('/logout', $ns . 'LoginController:logout');  //logs out    <all users
 $app->get('/logout', $ns . 'LoginController:logout');  //logs out    <all users>
 $app->get('/register', $ns . 'UserController:index');     //registration form     <all visitors with valid personal cert>
 $app->post('/register', $ns . 'UserController:create');    //registration action   <all visitors with valid personal cert>
-$app->get('/admin', $ns . 'AdminController:index');
 
-$app->get('/admin/delete/:userid', $ns . 'UserController:delete');     //delete user userid        <staff and group members>
-
-$app->post('/admin/deleteMultiple', $ns . 'UserController:deleteMultiple');     //delete user userid        <staff and group members>
-$app->get('/admin/edit/:userid', $ns . 'UserController:show');       //add user userid          <staff and group members>
-$app->post('/admin/edit/:userid', $ns . 'UserController:edit');       //add user userid          <staff and group members>
-
-$app->get('/admin/create', $ns . 'AdminController:create');       //add user userid          <staff and group members>
-$app->post('/admin/create', $ns . 'UserController:newuser');       //add user userid          <staff and group members>  //TODO FIX
+$app->group('/admin', $isAdmin, function () use ($app) {
+    $ns = 'ttm4135\\webapp\\controllers\\';
+    $app->get('/', $ns . 'AdminController:index');
+    $app->get('/delete/:userid', $ns . 'UserController:delete');     //delete user userid        <staff and group members>
+    $app->post('/deleteMultiple', $ns . 'UserController:deleteMultiple'); //delete user userid        <staff and group members>
+    $app->get('/edit/:userid', $ns . 'UserController:show');       //add user userid          <staff and group members>
+    $app->post('/edit/:userid', $ns . 'UserController:edit');      //add user userid          <staff and group members>
+    $app->get('/create', $ns . 'AdminController:create');      //add user userid          <staff and group members>
+    $app->post('/create', $ns . 'UserController:newuser');        //add user userid          <staff and group members>  //TODO FIX
+});
 
 
 return $app;

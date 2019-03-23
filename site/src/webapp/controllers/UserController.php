@@ -82,43 +82,30 @@ class UserController extends Controller
 
     function delete($tuserid)
     {
-        if (Auth::userAccess($tuserid)) {
-            $user = User::findById($tuserid);
-            $user->delete();
-            $this->app->flash('info', 'User ' . $user->getUsername() . '  with id ' . $tuserid . ' has been deleted.');
-            $this->app->redirect('/admin');
-        } else {
-            $username = Auth::user()->getUserName();
-            $this->app->flash('info', 'You do not have access this resource. You are logged in as ' . $username);
-            $this->app->redirect('/');
-        }
+        $user = User::findById($tuserid);
+        $user->delete();
+        $this->app->flash('info', 'User ' . $user->getUsername() . '  with id ' . $tuserid . ' has been deleted.');
+        $this->app->redirect('/admin');
     }
 
     function deleteMultiple()
     {
-        if (Auth::isAdmin()) {
-            $request = $this->app->request;
-            $userlist = $request->post('userlist');
-            $deleted = [];
+        $request = $this->app->request;
+        $userlist = $request->post('userlist');
+        $deleted = [];
 
-            if ($userlist == NULL) {
-                $this->app->flash('info', 'No user to be deleted.');
-            } else {
-                foreach ($userlist as $duserid) {
-                    $user = User::findById($duserid);
-                    if ($user->delete() == 1) { //1 row affect by delete, as expect..
-                        $deleted[] = $user->getId();
-                    }
-                }
-                $this->app->flash('info', 'Users with IDs  ' . implode(',', $deleted) . ' have been deleted.');
-            }
-
-            $this->app->redirect('/admin');
+        if ($userlist == NULL) {
+            $this->app->flash('info', 'No user to be deleted.');
         } else {
-            $username = Auth::user()->getUserName();
-            $this->app->flash('info', 'You do not have access this resource. You are logged in as ' . $username);
-            $this->app->redirect('/');
+            foreach ($userlist as $duserid) {
+                $user = User::findById($duserid);
+                if ($user->delete() == 1) { //1 row affect by delete, as expect..
+                    $deleted[] = $user->getId();
+                }
+            }
+            $this->app->flash('info', 'Users with IDs  ' . implode(',', $deleted) . ' have been deleted.');
         }
+        $this->app->redirect('/admin');
     }
 
 
@@ -174,41 +161,34 @@ class UserController extends Controller
         $user = User::findById($tuserid);
         if (!$user) {
             throw new \Exception("Unable to fetch logged in user's object from db.");
-        } elseif (Auth::userAccess($tuserid)) {
-            $request = $this->app->request;
+        }
+        $username = $request->post('username');
+        $password = $request->post('password', false);
+        $passwordConf = $request->post('passwordConf');
+        $email = $request->post('email');
+        $isAdmin = ($request->post('isAdmin') != null);
 
-            $username = $request->post('username');
-            $password = $request->post('password', false);
-            $passwordConf = $request->post('passwordConf');
-            $email = $request->post('email');
-            $isAdmin = ($request->post('isAdmin') != null);
-
-            if (!$passwordConf === $password && $password) {
-                $this->app->flashNow('error', 'The password does not meet all the requirements');
-                $this->render('showuser.twig', ['user' => $user]);
-            } else if ($password && (!$this->hasCapLetters($password) || !$this->hasNumbers($password) || !$this->hasSpecialChars($password))) {
-                $this->app->flashNow('error', 'The password does not meet all the requirements');
-                $this->render('showuser.twig', ['user' => $user]);
-            } else if (preg_match('/[^a-z0-9 _]+$/i', $username)) {
-                $this->app->flashNow('error', 'Username may only contain ASCII letters and digits, 
+        if (!$passwordConf === $password && $password) {
+            $this->app->flashNow('error', 'The password does not meet all the requirements');
+            $this->render('showuser.twig', ['user' => $user]);
+        } else if ($password && (!$this->hasCapLetters($password) || !$this->hasNumbers($password) || !$this->hasSpecialChars($password))) {
+            $this->app->flashNow('error', 'The password does not meet all the requirements');
+            $this->render('showuser.twig', ['user' => $user]);
+        } else if (preg_match('/[^a-z0-9 _]+$/i', $username)) {
+            $this->app->flashNow('error', 'Username may only contain ASCII letters and digits, 
             with hyphens, underscores and spaces as internal separators');
-                $this->render('showuser.twig', ['user' => $user]);
-            } else {
-                $user->setUsername($username);
-                if ($password) {
-                    $user->setPassword($password);
-                }
-                $user->setEmail($email);
-                $user->setIsAdmin($isAdmin);
-                $user->save();
-                $this->app->flashNow('info', 'Your profile was successfully saved.');
-                $user = User::findById($tuserid);
-                $this->render('showuser.twig', ['user' => $user]);
-            }
+            $this->render('showuser.twig', ['user' => $user]);
         } else {
-            $username = $user->getUserName();
-            $this->app->flash('info', 'You do not have access this resource. You are logged in as ' . $username);
-            $this->app->redirect('/');
+            $user->setUsername($username);
+            if ($password) {
+                $user->setPassword($password);
+            }
+            $user->setEmail($email);
+            $user->setIsAdmin($isAdmin);
+            $user->save();
+            $this->app->flashNow('info', 'Your profile was successfully saved.');
+            $user = User::findById($tuserid);
+            $this->render('showuser.twig', ['user' => $user]);
         }
     }
 
