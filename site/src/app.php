@@ -6,7 +6,7 @@ require_once __DIR__ . '/../vendor/autoload.php';
 
 $templatedir = __DIR__ . '/webapp/templates/';
 $app = new \Slim\Slim([
-    'debug' => true,
+    'debug' => false,
     'templates.path' => $templatedir,
     'view' => new \Slim\Views\Twig($templatedir
     )
@@ -16,7 +16,7 @@ $view->parserExtensions = array(
     new \Slim\Views\TwigExtension(),
 );
 $view->parserOptions = array(
-    'debug' => true
+    'debug' => false
 );
 
 
@@ -31,7 +31,6 @@ try {
     // Set errormode to exceptions
     $app->db->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 } catch (PDOException $e) {
-    echo $e->getMessage();
     exit();
 }
 
@@ -39,10 +38,13 @@ try {
 $ns = 'ttm4135\\webapp\\controllers\\';
 
 $isAdmin = function () {
-    if (!Auth::isAdmin()) {
-        $app = \Slim\Slim::getInstance();
+    $app = \Slim\Slim::getInstance();
+    if (!Auth::check()) {
+        $app->flash('info', 'You do not have access to this resource.');
+        $app->redirect('/login');
+    } else if (!Auth::isAdmin()) {
         $username = Auth::user()->getUserName();
-        $app->flash('info', 'You do not have access this resource. You are logged in as ' . $username);
+        $app->flash('info', 'You do not have access to this resource. You are logged in as ' . $username);
         $app->redirect('/');
     }
 };
@@ -52,7 +54,6 @@ $isAdmin = function () {
 
 $app->get('/', $ns . 'HomeController:index');             //front page            <all site visitors>
 
-$app->get('/admin', $ns . 'AdminController:index');        //admin overview        <staff and group members>
 
 $app->get('/login', $ns . 'LoginController:index');        //login form            <all site visitors>
 $app->post('/login', $ns . 'LoginController:login');       //login action          <all site visitors>
